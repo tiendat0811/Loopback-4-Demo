@@ -19,6 +19,30 @@ export async function main(options: ApplicationConfig = {}) {
 
   return app;
 }
+// async function createAdmin() {
+//     //check admin exists
+//     console.log('check admin exists');
+//     const admin = await this.userRepository.findOne({
+//       where: {email: 'admin'},
+//     });
+//     if (admin) {
+//       console.log('admin account exists');
+//       return;
+//     }
+//     //create admin
+
+//     const newUser = await this.userRepository.create({
+//       email: 'admin',
+//       password: 'admin',
+//       emailVerified: true,
+//     });
+//     const password = await hash(newUser.password, await genSalt());
+//     const savedUser = await this.userRepository.create(
+//       _.omit(newUser, 'password'),
+//     );
+//     await this.userRepository.userCredentials(savedUser.id).create({password});
+//     console.log('admin account created');
+//   }
 
 if (require.main === module) {
   // Run the application

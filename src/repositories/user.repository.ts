@@ -7,7 +7,8 @@ import {
 import {DbDataSource} from '../datasources';
 import {User, UserRelations, UserCredentials} from '../models';
 import {UserCredentialsRepository} from './user-credentials.repository';
-
+import {genSalt, hash} from 'bcryptjs';
+import _ from 'lodash';
 export class UserRepository extends DefaultCrudRepository<
   User,
   typeof User.prototype.id,

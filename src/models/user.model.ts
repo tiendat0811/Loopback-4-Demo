@@ -1,5 +1,6 @@
-import {Entity, hasOne, model, property} from '@loopback/repository';
+import {Entity, hasMany, hasOne, model, property} from '@loopback/repository';
 import {UserCredentials} from './user-credentials.model';
+import {Order} from './order.model';
 
 @model()
 export class User extends Entity {
@@ -52,6 +53,8 @@ export class User extends Entity {
   @hasOne(() => UserCredentials)
   userCredentials: UserCredentials;
 
+  @hasMany(() => Order)
+  orders: Order[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

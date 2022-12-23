@@ -9,11 +9,15 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
-// ---------- ADD IMPORTS -------------
+// ---------- ADD AUTHENTICATION -------------
 import {AuthenticationComponent} from '@loopback/authentication';
 import {JWTAuthenticationComponent} from './jwt-authentication-component';
 import {UserServiceBindings} from './keys';
 import {DbDataSource} from './datasources';
+// ------------------------------------
+
+// ---------- ADD AUTHORIZOR-------------
+import {AuthorizationComponent} from '@loopback/authorization';
 // ------------------------------------
 export {ApplicationConfig};
 
@@ -51,6 +55,8 @@ export class AuthApplication extends BootMixin(
     this.component(AuthenticationComponent);
     // Mount jwt component
     this.component(JWTAuthenticationComponent);
+    // Mount authorization system
+    this.component(AuthorizationComponent);
     // Bind datasource
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
     // ------------- END OF SNIPPET -------------

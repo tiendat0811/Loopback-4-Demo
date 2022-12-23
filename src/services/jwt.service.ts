@@ -37,7 +37,7 @@ export class JWTService implements TokenService {
           name: decodedToken.name,
           id: decodedToken.id,
           email: decodedToken.email,
-          //cat: 'dog',
+          roles: decodedToken.roles,
         },
       );
     } catch (error) {
@@ -58,7 +58,7 @@ export class JWTService implements TokenService {
       id: userProfile[securityId],
       name: userProfile.name,
       email: userProfile.email,
-      //cat: userProfile.cat,
+      roles: userProfile.roles,
     };
     // Generate a JSON Web Token
     let token: string;

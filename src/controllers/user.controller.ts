@@ -1,8 +1,3 @@
-// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
-// Node module: @loopback/example-todo-jwt
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 import {authenticate, TokenService} from '@loopback/authentication';
 import {
   Credentials,
@@ -13,17 +8,28 @@ import {
   UserServiceBindings,
 } from '@loopback/authentication-jwt';
 import {inject} from '@loopback/core';
-import {model, property, repository} from '@loopback/repository';
+import {
+  FilterExcludingWhere,
+  model,
+  property,
+  repository,
+} from '@loopback/repository';
 import {
   get,
   getModelSchemaRef,
+  param,
   post,
   requestBody,
+  response,
   SchemaObject,
 } from '@loopback/rest';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
 import _ from 'lodash';
+
+//authorizor
+import {authorize} from '@loopback/authorization';
+import {basicAuthorization} from '../services/basic.authorizor';
 
 @model()
 export class NewUserRequest extends User {
@@ -148,13 +154,36 @@ export class UserController {
     })
     newUserRequest: NewUserRequest,
   ): Promise<User> {
-    const password = await hash(newUserRequest.password, await genSalt());
+    const newUser = {
+      ...newUserRequest,
+      roles: ['customer'],
+    };
+    const password = await hash(newUser.password, await genSalt());
     const savedUser = await this.userRepository.create(
-      _.omit(newUserRequest, 'password'),
+      _.omit(newUser, 'password'),
     );
-
     await this.userRepository.userCredentials(savedUser.id).create({password});
-
     return savedUser;
+  }
+
+  @get('/users/{id}')
+  @response(200, {
+    description: 'Get user by id',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(User, {includeRelations: true}),
+      },
+    },
+  })
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['admin', 'customer'],
+    voters: [basicAuthorization],
+  })
+  async findById(
+    @param.path.string('id') id: string,
+    @param.filter(User, {exclude: 'where'}) filter?: FilterExcludingWhere<User>,
+  ): Promise<User> {
+    return this.userRepository.findById(id, filter);
   }
 }
