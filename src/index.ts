@@ -19,30 +19,6 @@ export async function main(options: ApplicationConfig = {}) {
 
   return app;
 }
-// async function createAdmin() {
-//     //check admin exists
-//     console.log('check admin exists');
-//     const admin = await this.userRepository.findOne({
-//       where: {email: 'admin'},
-//     });
-//     if (admin) {
-//       console.log('admin account exists');
-//       return;
-//     }
-//     //create admin
-
-//     const newUser = await this.userRepository.create({
-//       email: 'admin',
-//       password: 'admin',
-//       emailVerified: true,
-//     });
-//     const password = await hash(newUser.password, await genSalt());
-//     const savedUser = await this.userRepository.create(
-//       _.omit(newUser, 'password'),
-//     );
-//     await this.userRepository.userCredentials(savedUser.id).create({password});
-//     console.log('admin account created');
-//   }
 
 if (require.main === module) {
   // Run the application
@@ -50,11 +26,6 @@ if (require.main === module) {
     rest: {
       port: +(process.env.PORT ?? 3000),
       host: process.env.HOST,
-      // The `gracePeriodForClose` provides a graceful close for http/https
-      // servers with keep-alive clients. The default value is `Infinity`
-      // (don't force-close). If you want to immediately destroy all sockets
-      // upon stop, set its value to `0`.
-      // See https://www.npmjs.com/package/stoppable
       gracePeriodForClose: 5000, // 5 seconds
       openApiSpec: {
         // useful when used with OpenAPI-to-GraphQL to locate your application

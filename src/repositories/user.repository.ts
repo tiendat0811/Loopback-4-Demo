@@ -2,13 +2,14 @@ import {Getter, inject} from '@loopback/core';
 import {
   DefaultCrudRepository,
   HasOneRepositoryFactory,
-  repository,
-} from '@loopback/repository';
+  repository, HasManyRepositoryFactory} from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {User, UserRelations, UserCredentials} from '../models';
+import {User, UserRelations, UserCredentials, Order} from '../models';
 import {UserCredentialsRepository} from './user-credentials.repository';
 import {genSalt, hash} from 'bcryptjs';
 import _ from 'lodash';
+import {OrderRepository} from './order.repository';
+
 export class UserRepository extends DefaultCrudRepository<
   User,
   typeof User.prototype.id,
@@ -19,12 +20,16 @@ export class UserRepository extends DefaultCrudRepository<
     typeof User.prototype.id
   >;
 
+  public readonly orders: HasManyRepositoryFactory<Order, typeof User.prototype.id>;
+
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
     @repository.getter('UserCredentialsRepository')
-    protected userCredentialsRepositoryGetter: Getter<UserCredentialsRepository>,
+    protected userCredentialsRepositoryGetter: Getter<UserCredentialsRepository>, @repository.getter('OrderRepository') protected orderRepositoryGetter: Getter<OrderRepository>,
   ) {
     super(User, dataSource);
+    this.orders = this.createHasManyRepositoryFactoryFor('orders', orderRepositoryGetter,);
+    this.registerInclusionResolver('orders', this.orders.inclusionResolver);
     this.userCredentials = this.createHasOneRepositoryFactoryFor(
       'userCredentials',
       userCredentialsRepositoryGetter,

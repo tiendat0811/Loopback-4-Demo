@@ -12,19 +12,17 @@ export class User extends Entity {
   })
   id: string;
 
-  @property({
-    type: 'string',
-  })
-  realm?: string;
-
   // must keep it
   @property({
     type: 'string',
   })
   username?: string;
 
+
   // must keep it
   // feat email unique
+  @hasMany(() => Order)
+  orders: Order[];
   @property({
     type: 'string',
     required: true,
@@ -34,16 +32,6 @@ export class User extends Entity {
   })
   email: string;
 
-  @property({
-    type: 'boolean',
-  })
-  emailVerified?: boolean;
-
-  @property({
-    type: 'string',
-  })
-  verificationToken?: string;
-
   @property.array({
     type: 'array',
     itemType: 'string',
@@ -52,10 +40,6 @@ export class User extends Entity {
 
   @hasOne(() => UserCredentials)
   userCredentials: UserCredentials;
-
-  @hasMany(() => Order)
-  orders: Order[];
-  // Define well-known properties here
 
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

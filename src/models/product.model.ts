@@ -14,6 +14,21 @@ export class Product extends Entity {
   })
   name?: string;
 
+  @property({
+    type: 'string',
+  })
+  description?: string;
+
+  @property({
+    type: 'number',
+  })
+  price?: number;
+
+  @property({
+    type: 'string',
+  })
+  category?: string;
+
   constructor(data?: Partial<Product>) {
     super(data);
   }

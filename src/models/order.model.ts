@@ -1,4 +1,11 @@
-import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {
+  Entity,
+  belongsTo,
+  hasMany,
+  model,
+  property,
+} from '@loopback/repository';
+import {OrderItem} from './order-item.model';
 import {User} from './user.model';
 
 @model()
@@ -13,11 +20,18 @@ export class Order extends Entity {
   @property({
     type: 'date',
   })
-  date?: string;
+  createAt?: string;
 
-  // Each order belongs to a user, indentified by its id (userId)
-  @belongsTo(() => User)
+  @property({
+    type: 'number',
+  })
+  totalPrice?: number;
+
+  @belongsTo(() => User, {name: 'user'})
   userId: string;
+
+  @hasMany(() => OrderItem)
+  orderItems: OrderItem[];
 
   constructor(data?: Partial<Order>) {
     super(data);
