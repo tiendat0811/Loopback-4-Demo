@@ -1,16 +1,16 @@
 import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {Order, OrderRelations} from '../models';
+import {Migration, MigrationRelations} from '../models';
 
-export class OrderRepository extends DefaultCrudRepository<
-  Order,
-  typeof Order.prototype.id,
-  OrderRelations
+export class MigrationRepository extends DefaultCrudRepository<
+  Migration,
+  typeof Migration.prototype.id,
+  MigrationRelations
 > {
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
   ) {
-    super(Order, dataSource);
+    super(Migration, dataSource);
   }
 }

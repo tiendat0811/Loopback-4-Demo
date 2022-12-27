@@ -44,7 +44,7 @@ export class User extends Entity {
   })
   verificationToken?: string;
 
-  @property({
+  @property.array({
     type: 'array',
     itemType: 'string',
   })

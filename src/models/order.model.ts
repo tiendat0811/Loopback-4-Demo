@@ -1,6 +1,5 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {User} from './user.model';
-import {ShoppingCartItem} from './shopping-cart-item.model';
 
 @model()
 export class Order extends Entity {
@@ -15,9 +14,6 @@ export class Order extends Entity {
     type: 'date',
   })
   date?: string;
-
-  @property.array(ShoppingCartItem, {required: true})
-  products: ShoppingCartItem[];
 
   // Each order belongs to a user, indentified by its id (userId)
   @belongsTo(() => User)

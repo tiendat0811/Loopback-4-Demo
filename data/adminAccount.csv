@@ -1,0 +1,2 @@
+email,password,roles
+admin@gmail.com,adminroot,"[admin; customer]"
