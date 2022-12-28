@@ -20,19 +20,23 @@ import {
   response,
   SchemaObject,
 } from '@loopback/rest';
-import {User} from '../models';
+import {authenticate, TokenService} from '@loopback/authentication';
+import {
+  Credentials,
+  MyUserService,
+  TokenServiceBindings,
+  User,
+} from '@loopback/authentication-jwt';
 import {UserRepository} from '../repositories';
-
-//authorizor and authentication
+import {UserServiceBindings} from '../keys';
+import {inject} from '@loopback/core';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
 import _ from 'lodash';
+
+//authorizor
 import {authorize} from '@loopback/authorization';
 import {basicAuthorization} from '../services/basic.authorizor';
-import {TokenService, authenticate} from '@loopback/authentication';
-import {inject} from '@loopback/core';
-import {TokenServiceBindings, UserServiceBindings} from '../keys';
-import {MyUserService, Credentials} from '../services';
 
 @model()
 export class NewUserRequest extends User {
@@ -130,7 +134,6 @@ export class UserController {
     return this.userRepository.create(user);
   }
 
-  @authenticate('jwt')
   @get('/whoAmI', {
     responses: {
       '200': {
@@ -144,6 +147,11 @@ export class UserController {
         },
       },
     },
+  })
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['admin', 'customer'],
+    voters: [basicAuthorization],
   })
   async whoAmI(
     @inject(SecurityBindings.USER)

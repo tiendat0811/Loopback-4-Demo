@@ -6,10 +6,10 @@ const config = {
   connector: 'postgresql',
   url: '',
   //run local
-  //host: '0.0.0.0',
+  host: '0.0.0.0',
 
   //run docker
-  host: 'db',
+  //host: 'db',
   port: 5432,
   user: 'postgres',
   password: 'mypostgres',

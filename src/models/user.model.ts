@@ -53,7 +53,7 @@ export class User extends Entity {
   roles?: string[];
 
   @hasOne(() => UserCredentials)
-  userCredentials?: UserCredentials;
+  userCredentials: UserCredentials;
 
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
