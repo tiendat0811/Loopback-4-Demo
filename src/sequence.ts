@@ -125,7 +125,6 @@ export class MySequence implements SequenceHandler {
     try {
       const {request, response} = context;
       // Invoke registered Express middleware
-      console.log('before invoke middleware');
       const finished = await this.invokeMiddleware(context);
 
       if (finished) {
@@ -133,10 +132,9 @@ export class MySequence implements SequenceHandler {
         return;
       }
 
-      console.log('after invoke middleware 2');
       const route = this.findRoute(request);
       let args = await this.parseParams(request, route);
-      args = [...args, 4];
+      args = [...args];
       const result = await this.invoke(route, args);
 
       debug('%s result -', route.describe(), result);

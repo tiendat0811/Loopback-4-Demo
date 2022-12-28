@@ -19,7 +19,6 @@ export type Credentials = {
   email: string;
   password: string;
 };
-
 export class MyUserService implements UserService<User, Credentials> {
   constructor(
     @repository(UserRepository) public userRepository: UserRepository,
@@ -75,4 +74,7 @@ export class MyUserService implements UserService<User, Credentials> {
     }
     return foundUser;
   }
+}
+function getRolesForUser(id: string) {
+  throw new Error('Function not implemented.');
 }

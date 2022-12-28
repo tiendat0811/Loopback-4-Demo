@@ -12,17 +12,31 @@ export class User extends Entity {
   })
   id: string;
 
-  // must keep it
   @property({
     type: 'string',
   })
   username?: string;
 
+  @property({
+    type: 'string',
+  })
+  fullName?: string;
 
-  // must keep it
-  // feat email unique
-  @hasMany(() => Order)
-  orders: Order[];
+  @property({
+    type: 'string',
+  })
+  address?: string;
+
+  @property({
+    type: 'string',
+  })
+  phone?: string;
+
+  @property({
+    type: 'string',
+  })
+  avatar?: string;
+
   @property({
     type: 'string',
     required: true,
@@ -32,14 +46,14 @@ export class User extends Entity {
   })
   email: string;
 
-  @property.array({
+  @property({
     type: 'array',
     itemType: 'string',
   })
   roles?: string[];
 
   @hasOne(() => UserCredentials)
-  userCredentials: UserCredentials;
+  userCredentials?: UserCredentials;
 
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

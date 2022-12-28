@@ -5,8 +5,8 @@ import {
   model,
   property,
 } from '@loopback/repository';
-import {OrderItem} from './order-item.model';
 import {User} from './user.model';
+import {OrderItem} from './order-item.model';
 
 @model()
 export class Order extends Entity {
@@ -23,15 +23,35 @@ export class Order extends Entity {
   createAt?: string;
 
   @property({
-    type: 'number',
+    type: 'string',
   })
-  totalPrice?: number;
+  paymentMethod?: string;
 
-  @belongsTo(() => User, {name: 'user'})
-  userId: string;
+  @property({
+    type: 'string',
+  })
+  paymentStatus?: string;
+
+  @property({
+    type: 'string',
+  })
+  delivery?: string;
+
+  @property({
+    type: 'string',
+  })
+  deliveryMethod?: string;
 
   @hasMany(() => OrderItem)
-  orderItems: OrderItem[];
+  orderItems?: OrderItem[];
+
+  @belongsTo(() => User)
+  userId?: string;
+
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
   constructor(data?: Partial<Order>) {
     super(data);

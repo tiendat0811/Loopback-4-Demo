@@ -17,9 +17,6 @@ export class OrderItem extends Entity {
   })
   quantity: number;
 
-  @belongsTo(() => Order)
-  orderId: number;
-
   constructor(data?: Partial<OrderItem>) {
     super(data);
   }
