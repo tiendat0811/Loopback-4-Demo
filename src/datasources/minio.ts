@@ -1,15 +1,14 @@
 import {Buffer} from 'buffer';
 var Minio = require('minio');
-var minioClient = new Minio.Client({
+
+export const minioClient = new Minio.Client({
   endPoint: 'localhost',
   port: 9000,
   useSSL: false,
-  accessKey: 'Ir6UDyY2SeJY8b9A',
-  secretKey: 'n7fYL1I9dk9SVFxll0BN3RsaJkje5211',
+  accessKey: 'O93axwBOTMLNjVXi',
+  secretKey: 'B4xQxIzbJloQB37dCXVoLL5SxgjtQyIb',
 });
-const {promisify} = require('util');
-const fs = require('fs');
-const writeFile = promisify(fs.writeFile);
+
 export const uploadFile = async (bucketName: any, baseString: any) => {
   try {
     const base64Data = baseString.split(',')[1];
@@ -28,7 +27,10 @@ export const uploadFile = async (bucketName: any, baseString: any) => {
         if (err) return console.log(err);
       },
     );
-    const url = await minioClient.presignedGetObject(bucketName, name, 1000);
+
+    //const url = `http://${minioClient.host}:${minioClient.port}/${bucketName}/${name}`;
+    const url = `http://[::1]:5000/image/${bucketName}/${name}`;
+    console.log(url);
     return url;
   } catch (error) {
     console.log(error);

@@ -25,8 +25,8 @@ import {
   Credentials,
   MyUserService,
   TokenServiceBindings,
-  User,
 } from '@loopback/authentication-jwt';
+import {User} from '../models';
 import {UserRepository} from '../repositories';
 import {UserServiceBindings} from '../keys';
 import {inject} from '@loopback/core';
@@ -122,7 +122,7 @@ export class UserController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(User, {
+          schema: getModelSchemaRef(NewUserRequest, {
             title: 'NewUser',
             exclude: ['id'],
           }),
@@ -167,7 +167,7 @@ export class UserController {
         content: {
           'application/json': {
             schema: {
-              'x-ts-type': User,
+              'x-ts-type': NewUserRequest,
             },
           },
         },
@@ -198,11 +198,6 @@ export class UserController {
     return savedUser;
   }
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['admin'],
-    voters: [basicAuthorization],
-  })
   @get('/users/count')
   @response(200, {
     description: 'User model count',
@@ -212,11 +207,6 @@ export class UserController {
     return this.userRepository.count(where);
   }
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['admin'],
-    voters: [basicAuthorization],
-  })
   @get('/users')
   @response(200, {
     description: 'Array of User model instances',
